@@ -5,22 +5,6 @@ const prisma = new Prisma({
     endpoint: 'http://localhost:4466'
 });
 
-// prisma.mutation.updatePost({
-//     where: {
-//         id: "cjsfqj3xg002m0884d1zcyirl"
-//     },
-//     data: {
-//         body: "This is the body of the previous post",
-//         published: true
-//     }
-// }, '{ id title body published }').then((data) => {
-//     console.log(data);
-//     return prisma.query.posts(null, '{ id title body published }');
-// }). then ((data)=> {
-//     console.log(JSON.stringify(data, undefined, 2));
-// });
-
-/*
 const createPostForUser = async (authorId, data) => {
     const post = await prisma.mutation.createPost({
         data: {
@@ -39,7 +23,9 @@ const createPostForUser = async (authorId, data) => {
     }, `{ id name email posts { id title published }}`)
     return user
 }
+// Sample usage
 
+/*
 createPostForUser("cjs9ye0e101w90884ynrs27xn", {
     title: "Great books to read",
     body: "Game of thrones",
@@ -47,3 +33,30 @@ createPostForUser("cjs9ye0e101w90884ynrs27xn", {
 }).then ((user) => {
     console.log(JSON.stringify(user, undefined, 2));
 }) */
+
+const updatePost = async (postId, data) => {
+
+    const {author} = await prisma.mutation.updatePost({
+        where: {
+            id: postId
+        },
+        data: data
+    }, '{ author { id } }')
+    
+    const user = await prisma.query.user({
+        where: {
+            id: author.id
+        }
+    }, `{ id name email posts { id title published }}`)
+    return user
+
+}
+// Sample usage
+
+/*
+updatePost("cjsh7k1i9004a08845qxals7b", {
+    title: "Great books to read",
+    published: false
+}).then ((user) => {
+    console.log(JSON.stringify(user, undefined, 2));
+})*/
