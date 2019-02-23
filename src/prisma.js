@@ -5,44 +5,45 @@ const prisma = new Prisma({
     endpoint: 'http://localhost:4466'
 });
 
-// prisma.query.users(null, `{ id name email posts { id title } }` ).then((data) => {
-//     console.log(JSON.stringify(data, undefined, 2));
-// });
-
-// prisma.query.comments(null, `{ id text author { id name } }`).then((data)=> {
-//     console.log(JSON.stringify(data, undefined, 2));
-// });
-
-
-// prisma.mutation.createPost({
+// prisma.mutation.updatePost({
+//     where: {
+//         id: "cjsfqj3xg002m0884d1zcyirl"
+//     },
 //     data: {
-//         title: "GraphQL 101!",
-//         body: "",
-//         published: false,
-//         author: {
-//             connect: {
-//                 id: "cjs9ye0e101w90884ynrs27xn"
-//             }
-//         }
+//         body: "This is the body of the previous post",
+//         published: true
 //     }
-// }, '{ id title body published }').then ((data) => {
+// }, '{ id title body published }').then((data) => {
 //     console.log(data);
-//     return prisma.query.users(null, '{ id name email posts { id title } }');
-// }).then((data) => {
+//     return prisma.query.posts(null, '{ id title body published }');
+// }). then ((data)=> {
 //     console.log(JSON.stringify(data, undefined, 2));
-// })
+// });
 
-prisma.mutation.updatePost({
-    where: {
-        id: "cjsfqj3xg002m0884d1zcyirl"
-    },
-    data: {
-        body: "This is the body of the previous post",
-        published: true
-    }
-}, '{ id title body published }').then((data) => {
-    console.log(data);
-    return prisma.query.posts(null, '{ id title body published }');
-}). then ((data)=> {
-    console.log(JSON.stringify(data, undefined, 2));
-})
+/*
+const createPostForUser = async (authorId, data) => {
+    const post = await prisma.mutation.createPost({
+        data: {
+            ...data,
+            author: {
+                connect: {
+                    id: authorId
+                }
+            }
+        }
+    }, `{ id }`)
+    const user = await prisma.query.user({
+        where: {
+            id: authorId
+        }
+    }, `{ id name email posts { id title published }}`)
+    return user
+}
+
+createPostForUser("cjs9ye0e101w90884ynrs27xn", {
+    title: "Great books to read",
+    body: "Game of thrones",
+    published: true
+}).then ((user) => {
+    console.log(JSON.stringify(user, undefined, 2));
+}) */
