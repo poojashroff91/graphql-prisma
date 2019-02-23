@@ -5,7 +5,17 @@ const prisma = new Prisma({
     endpoint: 'http://localhost:4466'
 });
 
+
 const createPostForUser = async (authorId, data) => {
+
+    const userExists = await prisma.exists.User({
+        id: authorId
+    })
+
+    if(!userExists) {
+        throw new Error('The user does not exist')
+    }
+
     const post = await prisma.mutation.createPost({
         data: {
             ...data,
@@ -15,48 +25,49 @@ const createPostForUser = async (authorId, data) => {
                 }
             }
         }
-    }, `{ id }`)
-    const user = await prisma.query.user({
-        where: {
-            id: authorId
-        }
-    }, `{ id name email posts { id title published }}`)
-    return user
+    }, `{ author { id name email posts { id title published } } }`)
+    
+    return post.author
 }
 // Sample usage
-
 /*
-createPostForUser("cjs9ye0e101w90884ynrs27xn", {
+createPostForUser("cjsa3tdew007u0984hz2t2dda", {
     title: "Great books to read",
     body: "Game of thrones",
     published: true
 }).then ((user) => {
     console.log(JSON.stringify(user, undefined, 2));
-}) */
+}) .catch ((error) => {
+    console.log(error.message);
+})*/
 
 const updatePostForUser = async (postId, data) => {
+
+    const postExists = await prisma.exists.Post({
+        id: postId
+    })
+
+    if(!postExists) {
+        throw new Error('The post does not exist')
+    }
 
     const post = await prisma.mutation.updatePost({
         where: {
             id: postId
         },
         data: data
-    }, '{ author { id } }')
-    
-    const user = await prisma.query.user({
-        where: {
-            id: post.author.id
-        }
-    }, `{ id name email posts { id title published }}`)
-    return user
+    }, '{ author { id name email posts { id title published }} }')  
+    return post.author
 
 }
 // Sample usage
 
 /*
 updatePostForUser("cjsh7k1i9004a08845qxals7b", {
-    title: "Great books to read",
-    published: false
+    title: "Great book to read",
+    published: true
 }).then ((user) => {
     console.log(JSON.stringify(user, undefined, 2));
+}).catch ((error) => {
+    console.log(error.message);
 })*/
