@@ -34,9 +34,9 @@ createPostForUser("cjs9ye0e101w90884ynrs27xn", {
     console.log(JSON.stringify(user, undefined, 2));
 }) */
 
-const updatePost = async (postId, data) => {
+const updatePostForUser = async (postId, data) => {
 
-    const {author} = await prisma.mutation.updatePost({
+    const post = await prisma.mutation.updatePost({
         where: {
             id: postId
         },
@@ -45,7 +45,7 @@ const updatePost = async (postId, data) => {
     
     const user = await prisma.query.user({
         where: {
-            id: author.id
+            id: post.author.id
         }
     }, `{ id name email posts { id title published }}`)
     return user
@@ -54,7 +54,7 @@ const updatePost = async (postId, data) => {
 // Sample usage
 
 /*
-updatePost("cjsh7k1i9004a08845qxals7b", {
+updatePostForUser("cjsh7k1i9004a08845qxals7b", {
     title: "Great books to read",
     published: false
 }).then ((user) => {
