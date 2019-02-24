@@ -29,8 +29,8 @@ const createPostForUser = async (authorId, data) => {
     
     return post.author
 }
-// Sample usage
 /*
+ * * Usage of create Post
 createPostForUser("cjsa3tdew007u0984hz2t2dda", {
     title: "Great books to read",
     body: "Game of thrones",
@@ -60,9 +60,9 @@ const updatePostForUser = async (postId, data) => {
     return post.author
 
 }
-// Sample usage
 
 /*
+* * Usage of update Post
 updatePostForUser("cjsh7k1i9004a08845qxals7b", {
     title: "Great book to read",
     published: true
