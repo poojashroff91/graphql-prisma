@@ -5,7 +5,9 @@ const prisma = new Prisma({
     endpoint: 'http://localhost:4466'
 });
 
+export {prisma as default}
 
+/*
 const createPostForUser = async (authorId, data) => {
 
     const userExists = await prisma.exists.User({
@@ -29,7 +31,7 @@ const createPostForUser = async (authorId, data) => {
     
     return post.author
 }
-/*
+
  * * Usage of create Post
 createPostForUser("cjsa3tdew007u0984hz2t2dda", {
     title: "Great books to read",
@@ -40,7 +42,7 @@ createPostForUser("cjsa3tdew007u0984hz2t2dda", {
 }) .catch ((error) => {
     console.log(error.message);
 })*/
-
+/*
 const updatePostForUser = async (postId, data) => {
 
     const postExists = await prisma.exists.Post({
@@ -61,7 +63,7 @@ const updatePostForUser = async (postId, data) => {
 
 }
 
-/*
+
 * * Usage of update Post
 updatePostForUser("cjsh7k1i9004a08845qxals7b", {
     title: "Great book to read",
