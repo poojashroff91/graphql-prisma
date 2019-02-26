@@ -2,12 +2,12 @@ import uuidv4 from 'uuid/v4';
 import { PubSub } from 'graphql-yoga';
 
 const Mutation = {
-    async createUser(parent, args, { prisma }, info) {
+    createUser(parent, args, { prisma }, info) {
         return prisma.mutation.createUser({
             data: args.data
         })
     },
-    async updateUser(parent, args, { prisma }, info){
+    updateUser(parent, args, { prisma }, info){
         return prisma.mutation.updateUser({
             where: {
                 id: args.id
@@ -15,7 +15,7 @@ const Mutation = {
             data: args.data
         })
     },
-    async deleteUser(parent, args, { prisma }, info) {
+    deleteUser(parent, args, { prisma }, info) {
         return prisma.mutation.deleteUser({
             where: {
                 id: args.id
@@ -23,7 +23,7 @@ const Mutation = {
         }, info)
     },
 
-    async createPost(parent, args, { prisma }, info) {
+    createPost(parent, args, { prisma }, info) {
         
         return prisma.mutation.createPost({
             data: {
@@ -38,7 +38,7 @@ const Mutation = {
             }
         }, info)
     },
-    async updatePost(parent, args, { prisma }, info){
+    updatePost(parent, args, { prisma }, info){
         return prisma.mutation.updatePost({
             data: args.data,
             where: {
@@ -46,7 +46,7 @@ const Mutation = {
             }
         }, info)
     },
-    async deletePost(parent, args, { prisma }, info) {
+    deletePost(parent, args, { prisma }, info) {
         return prisma.mutation.deletePost({
             where: {
                 id: args.id
@@ -54,7 +54,7 @@ const Mutation = {
         }, info)
     },
 
-    async createComment(parent, args, { prisma }, info){
+    createComment(parent, args, { prisma }, info){
         return prisma.mutation.createComment({
             data: {
                 text: args.data.text,
@@ -71,7 +71,7 @@ const Mutation = {
             }
         }, info)
     },
-    async updateComment(parent, args, { prisma }, info) {
+    updateComment(parent, args, { prisma }, info) {
         return prisma.mutation.updateComment ({
             where: {
                 id: args.id
@@ -79,7 +79,7 @@ const Mutation = {
             data: args.data
         }, info)
     },
-    async deleteComment(parent, args, { prisma }, info) {
+    deleteComment(parent, args, { prisma }, info) {
         return prisma.mutation.deleteComment({
             where: {
                 id: args.id
