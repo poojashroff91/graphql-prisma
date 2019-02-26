@@ -13,10 +13,10 @@ services:
         databases:
           default:
             connector: postgres
-            host: ec2-54-83-17-151.compute-1.amazonaws.com
+            host: ec2-54-235-134-25.compute-1.amazonaws.com
             port: '5432'
-            database: d6gvnpb7pudvnt
+            database: d4lu4g8r14e2oo
             ssl: true
-            user: uajwuxbmihvsyh
-            password: 292a0885ce65e80839ce84eb01e8e39dff0c310e0a345191b6dfcb73d50aa51d
+            user: imvwmkjrrzxapg
+            password: 717a52580314b8bf9a396ab195c652fa5dcf76c9d92bf62d216f39b60b154450
             migrations: true
