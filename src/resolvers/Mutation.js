@@ -1,11 +1,25 @@
-import uuidv4 from 'uuid/v4';
-import { PubSub } from 'graphql-yoga';
+// Take in password - Validate - Hash - generate auth token
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const Mutation = {
-    createUser(parent, args, { prisma }, info) {
-        return prisma.mutation.createUser({
-            data: args.data
+    async createUser(parent, args, { prisma }, info) {
+
+        if(args.data.password.length < 8) {
+            throw new Error ('Password must be 8 characters or longer');
+        }
+
+        const password = await bcrypt.hash(args.data.password, 10);
+        const user = await prisma.mutation.createUser({
+            data: {
+                ...args.data,
+                password
+            }
         })
+        return {
+            user,
+            token: jwt.sign({userId: user.id}, 'thisisasecret')
+        }
     },
     updateUser(parent, args, { prisma }, info){
         return prisma.mutation.updateUser({
