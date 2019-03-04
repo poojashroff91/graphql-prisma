@@ -3,6 +3,7 @@ type Query {
     me: User!
     post(id: ID!): Post!
     posts(query: String): [Post!]!
+    myPosts(query: String): [Post!]!
     comments: [Comment!]!
 }
 type Mutation {
