@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import getUserId from '../utils/getUserId';
 import generateToken from '../utils/generateToken';
 import hashPassword from '../utils/hashPassword';
@@ -41,7 +40,6 @@ const Mutation = {
             }
         }, info)
     },
-
     createPost(parent, args, { prisma, request }, info) {
         const userId = getUserId(request);
         return prisma.mutation.createPost({
@@ -112,7 +110,6 @@ const Mutation = {
             } 
         }, info)
     },
-
     async createComment(parent, args, { prisma, request }, info){
         const userId = getUserId(request);
 
