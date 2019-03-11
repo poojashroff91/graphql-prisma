@@ -72,3 +72,80 @@ test('Should create a new user', async () => {
     expect(userExists).toBe(true);
 
 });
+
+test('Should expose public author profiles', async () => {
+    const getUsers = gql`
+        query{
+            users{
+                id
+                name
+                email
+            }
+        }
+    `;
+    const response = await client.query({
+        query: getUsers
+    });
+    expect(response.data.users.length).toBe(1);
+    expect(response.data.users[0].email).toBe(null);
+    expect(response.data.users[0].name).toBe('Jen');
+
+});
+
+test('Should expose published posts', async () => {
+    const getPosts = gql`
+        query{
+            posts{
+                id
+                title
+                body
+                published
+            }
+        }
+    `;
+    const response = await client.query({
+        query: getPosts
+    });
+    expect(response.data.posts.length).toBe(1);
+    expect(response.data.posts[0].published).toBe(true);
+});
+
+test('Should not login with bad credentials', async () => {
+    const login = gql`
+        mutation{
+            login(
+                data: {
+                    email: "jen@example.com",
+                    password: "incorrect123"
+                }
+            ){
+                token
+            }
+        }
+    `;
+    await expect(
+        client.mutate({ mutation: login})
+    ).rejects.toThrow();    
+});
+
+test('Should not sign up user with invalid password', async () => {
+    const createUser = gql`
+        mutation {
+            createUser(
+                data: {
+                    name: "Andrew Mead",
+                    email: "andrew@example.com",
+                    password: "short"
+                }
+            ) {
+                token,
+                user {
+                    id
+                }
+            }
+        }
+    `;
+    await expect(
+        client.mutate({ mutation: createUser})
+    ).rejects.toThrow();
+});
