@@ -12,11 +12,11 @@ const Mutation = {
                 ...args.data,
                 password
             }
-        })
+        });
         return {
             user,
             token: generateToken(user.id)
-        }
+        };
     },
     async updateUser(parent, args, { prisma, request }, info){
 
@@ -30,7 +30,7 @@ const Mutation = {
                 id: userId
             },
             data: args.data
-        }, info)
+        }, info);
     },
     deleteUser(parent, args, { prisma, request }, info) {
         const userId = getUserId(request);
@@ -38,7 +38,7 @@ const Mutation = {
             where: {
                 id: userId
             }
-        }, info)
+        }, info);
     },
     createPost(parent, args, { prisma, request }, info) {
         const userId = getUserId(request);
@@ -53,7 +53,7 @@ const Mutation = {
                     }
                 }
             }
-        }, info)
+        }, info);
     },
     async updatePost(parent, args, { prisma, request }, info){
         const userId = getUserId(request);
@@ -63,12 +63,12 @@ const Mutation = {
             author: {
                 id: userId
             }
-        })
+        });
 
         const isPublished = await prisma.exists.Post({
             id: args.id,
             published: true
-        })
+        });
 
         if(isPublished && !args.data.published) {
             await prisma.mutation.deleteManyComments({
@@ -77,18 +77,18 @@ const Mutation = {
                         id: args.id
                     }
                 }
-            })
+            });
         }
 
         if(!postExists) {
-            throw new Error('Unable to update post')
+            throw new Error('Unable to update post');
         }
         return prisma.mutation.updatePost({
             data: args.data,
             where: {
                 id: args.id
             }
-        }, info)
+        }, info);
     },
     async deletePost(parent, args, { prisma, request }, info) {
         const userId = getUserId(request);
@@ -98,17 +98,17 @@ const Mutation = {
             author: {
                 id: userId
             }
-        })
+        });
 
         if(!postExists) {
-            throw new Error('Unable to delete post')
+            throw new Error('Unable to delete post');
         }
 
         return prisma.mutation.deletePost({
             where: {
                 id: args.id
             } 
-        }, info)
+        }, info);
     },
     async createComment(parent, args, { prisma, request }, info){
         const userId = getUserId(request);
@@ -116,10 +116,10 @@ const Mutation = {
         const postExists = await prisma.exists.Post({
             id: args.data.post,
             published: true
-        })
+        });
 
         if(!postExists) {
-            throw new Error ('Unable to add comment')
+            throw new Error ('Unable to add comment');
         }
 
         return prisma.mutation.createComment({
@@ -136,7 +136,7 @@ const Mutation = {
                     }
                 }
             }
-        }, info)
+        }, info);
     },
     async updateComment(parent, args, { prisma, request}, info) {
         const userId = getUserId(request);
@@ -146,10 +146,10 @@ const Mutation = {
             author: {
                 id: userId
             }
-        })
+        });
 
         if(!commentExists) {
-            throw new Error ('Unable to update comment.')
+            throw new Error ('Unable to update comment.');
         }
 
         return prisma.mutation.updateComment ({
@@ -157,7 +157,7 @@ const Mutation = {
                 id: args.id
             },
             data: args.data
-        }, info)
+        }, info);
     },
     async deleteComment(parent, args, { prisma, request }, info) {
         const userId = getUserId(request);
@@ -167,10 +167,10 @@ const Mutation = {
             author: {
                 id: userId
             }
-        })
+        });
 
         if(!commentExists) {
-            throw new Error ('Unable to delete comment.')
+            throw new Error ('Unable to delete comment.');
         }
 
         return prisma.mutation.deleteComment({
@@ -184,19 +184,19 @@ const Mutation = {
             where: {
                 email: args.data.email
             }
-        })
+        });
         if(!user) {
-            throw new Error ('Unable to login')
+            throw new Error ('Unable to login');
         }
-        const isMatch = await bcrypt.compare(args.data.password, user.password)
+        const isMatch = await bcrypt.compare(args.data.password, user.password);
 
         if(!isMatch) {
-            throw new Error ('Unable to login')
+            throw new Error ('Unable to login');
         }
         return {
             user,
             token: generateToken(user.id)
-        }
+        };
     }
 };
 
